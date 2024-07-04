@@ -9,4 +9,6 @@ public interface UserService {
     void signup(User user);
 
     Optional<User> login(String email, String password);
+
+    void removeAllUsers();
 }
