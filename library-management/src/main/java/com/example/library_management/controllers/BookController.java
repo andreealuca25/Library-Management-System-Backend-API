@@ -40,13 +40,11 @@ public class BookController {
 
     @GetMapping("/getInfo/{id}")
     public ResponseEntity<Book> getBook (@PathVariable long id) {
-        try {
-            Book book = bookService.getBookById(id);
-            return new ResponseEntity<>(book, HttpStatus.OK);
+        Book book = bookService.getBookById(id);
+        if (book == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        catch(NoSuchElementException exception){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return ResponseEntity.ok(book);
     }
 
     @DeleteMapping("/remove/{id}")
