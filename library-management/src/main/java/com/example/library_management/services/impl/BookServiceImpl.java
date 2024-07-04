@@ -47,4 +47,9 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Book not found with id: " + id));
         bookRepository.delete(book);
     }
+
+    @Override
+    public void deleteAllBooks() {
+        bookRepository.deleteAll();
+    }
 }

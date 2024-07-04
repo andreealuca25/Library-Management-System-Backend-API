@@ -35,16 +35,18 @@ public class BookController {
     @PostMapping("/update")
     public ResponseEntity<String> updateBook(@RequestBody Book book) {
        bookService.updateBook(book);
-        return new ResponseEntity<>("Book added successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Book updated successfully", HttpStatus.OK);
     }
 
     @GetMapping("/getInfo/{id}")
     public ResponseEntity<Book> getBook (@PathVariable long id) {
-        Book book = bookService.getBookById(id);
-        if (book == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        try {
+            Book book = bookService.getBookById(id);
+            return new ResponseEntity<>(book, HttpStatus.OK);
         }
-        return ResponseEntity.ok(book);
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/remove/{id}")

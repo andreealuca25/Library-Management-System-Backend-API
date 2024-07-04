@@ -41,11 +41,12 @@ public class AuthorController {
 
     @GetMapping("/getInfo/{id}")
     public ResponseEntity<Author> getAuthor(@PathVariable long id) {
-        Author author = authorService.getAuthorById(id);
-        if (author == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        try {
+            Author author = authorService.getAuthorById(id);
+            return new ResponseEntity<>(author, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(author);
     }
 
     @DeleteMapping("/remove/{id}")

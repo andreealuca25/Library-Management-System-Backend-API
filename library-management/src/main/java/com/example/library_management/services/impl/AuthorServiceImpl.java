@@ -46,4 +46,9 @@ public class AuthorServiceImpl implements AuthorService {
         return list;
     }
 
+    @Override
+    public void deleteAllAuthors() {
+        authorRepository.deleteAll();
+    }
+
 }

@@ -16,4 +16,6 @@ public interface AuthorService {
     void deleteAuthor(long id);
 
     List<Author> retrieveAllAuthors();
+
+    void deleteAllAuthors();
 }

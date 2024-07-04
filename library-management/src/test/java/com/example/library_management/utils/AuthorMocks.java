@@ -15,6 +15,14 @@ public class AuthorMocks {
                 .build();
     }
 
+    public static Author mockAuthor2() {
+        return Author.builder()
+                .id(2L)
+                .name("George R.R. Martin")
+                .bio("bio2")
+                .build();
+    }
+
     public static List<Author> mockAuthorList() {
         List<Author> authors = new ArrayList<>();
         authors.add(Author.builder().id(1L).name("J.K. Rowling").bio("bio1").build());

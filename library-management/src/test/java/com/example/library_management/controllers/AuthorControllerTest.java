@@ -122,7 +122,8 @@ public class AuthorControllerTest {
     @Test
     void whenGetAuthor_givenNonExistentId_thenReturnNotFound() throws Exception {
         long nonExistentId = 999L;
-        when(authorService.getAuthorById(nonExistentId)).thenReturn(null);
+        doThrow(new NoSuchElementException("Author not found with id: " + nonExistentId))
+                .when(authorService).getAuthorById(nonExistentId);
 
         mockMvc.perform(get("/authors/getInfo/{id}", nonExistentId)
                         .contentType(MediaType.APPLICATION_JSON))

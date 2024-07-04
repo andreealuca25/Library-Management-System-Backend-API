@@ -125,7 +125,8 @@ public class BookControllerTest {
     @Test
     void whenGetBook_givenNonExistentId_thenReturnNotFound() throws Exception {
         long nonExistentId = 999L;
-        when(bookService.getBookById(nonExistentId)).thenReturn(null);
+        doThrow(new NoSuchElementException("Book not found with id: " + nonExistentId))
+                .when(bookService).getBookById(nonExistentId);
 
         mockMvc.perform(get("/books/getInfo/{id}", nonExistentId)
                         .contentType(MediaType.APPLICATION_JSON))
