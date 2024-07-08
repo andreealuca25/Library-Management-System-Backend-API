@@ -1,0 +1,266 @@
+openapi: 3.0.3
+info:
+  title: 'Library Management API'
+  version: 0.0.1
+  description: 'API for managing books, authors and users in a library'
+
+tags:
+  - name: authors
+    description: Author Endpoint
+  - name: books
+    description: Books Endpoint
+  - name: users
+    description: User Endpoint
+
+paths:
+  /authors:
+    get:
+      tags:
+        - authors
+      summary: Retrieve all authors
+      operationId: getAllAuthors
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+  /authors/add:
+    post:
+      tags:
+        - authors
+      summary: Add a new author
+      operationId: addAuthor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        '201':
+          description: Author added successfully.
+  /authors/update:
+    post:
+      tags:
+        - authors
+      summary: Update an existing author
+      operationId: updateAuthor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        '200':
+          description: Author updated successfully.
+  /authors/getInfo/{id}:
+    get:
+      tags:
+        - authors
+      summary: Get an author based on ID
+      operationId: getAuthor
+      parameters:
+        - name: id
+          in: path
+          schema:
+           type: integer
+      responses:
+        '200':
+          description: Author found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '404':
+          description: Author not found.
+  /authors/remove/{id}:
+      delete:
+        tags:
+          - authors
+        summary: Remove an author based on ID
+        operationId: removeAuthor
+        parameters:
+          - name: id
+            in: path
+            schema:
+              type: integer
+        responses:
+          '200':
+            description: Author removed successfully.
+          '404':
+            description: Author not found.
+  /books:
+    get:
+      tags:
+        - books
+      summary: Retrieve all books
+      operationId: getAllBooks
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+  /books/add:
+    post:
+      tags:
+        - books
+      summary: Add a new book
+      operationId: addBook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '201':
+          description: Book added successfully.
+  /books/update:
+    post:
+      tags:
+        - books
+      summary: Update an existing book
+      operationId: updateBook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '200':
+          description: Book updated successfully.
+  /books/getInfo/{id}:
+    get:
+      tags:
+        - books
+      summary: Get an book based on ID
+      operationId: getBook
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Book found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: Book not found.
+  /books/remove/{id}:
+    delete:
+      tags:
+        - books
+      summary: Remove an book based on ID
+      operationId: removeBook
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Book removed successfully.
+        '404':
+          description: Book not found.
+  /signup:
+   post:
+    tags:
+      - users
+    summary: Creates a new account for user
+    operationId: signup
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+    responses:
+      '201':
+        description: User signed up successfully.
+  /login:
+    post:
+      tags:
+        - users
+      summary: Authenticates an existing user
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User logged in successfully.
+        '401':
+          description: Invalid credentials
+
+components:
+  schemas:
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: Stephen King
+        bio:
+          type: string
+          example: Author description
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          format: string
+          example: Book title
+        description:
+          type: string
+          example: Book description
+        isbn:
+          type: string
+          format: string
+          example: 9780747532743
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        email:
+          type: string
+          format: string
+          example: john@doe.example.com
+        password:
+          type: string
+          format: string
+          example: encryptedPass
+        firstName:
+          type: string
+          format: string
+          example: John
+        lastName:
+          type: string
+          format: string
+          example: Doe
