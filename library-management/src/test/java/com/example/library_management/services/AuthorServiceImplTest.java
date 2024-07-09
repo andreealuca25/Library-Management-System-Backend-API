@@ -61,13 +61,28 @@ class AuthorServiceImplTest {
     }
 
     @Test
-    void whenUpdateAuthor_shouldUpdateAuthor() {
-        when(authorRepository.save(author)).thenReturn(author);
+    void whenUpdateAuthor_givenExistingAuthor_shouldUpdateAuthor() {
+        when(authorRepository.findByName(author.getName())).thenReturn(Optional.of(author));
 
         authorService.updateAuthor(author);
 
+        verify(authorRepository, times(1)).findByName(author.getName());
         verify(authorRepository, times(1)).save(author);
     }
+
+    @Test
+    void whenUpdateAuthor_givenNonExistingAuthor_shouldThrowException() {
+        when(authorRepository.findByName(author.getName())).thenReturn(Optional.empty());
+
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
+            authorService.updateAuthor(author);
+        });
+
+        assertEquals("Author not found", exception.getMessage());
+        verify(authorRepository, times(1)).findByName(author.getName());
+        verify(authorRepository, times(0)).save(author);
+    }
+
 
     @Test
     void whenAddAuthor_shouldAddAuthor() {

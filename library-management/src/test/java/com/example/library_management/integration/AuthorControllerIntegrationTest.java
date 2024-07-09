@@ -64,8 +64,8 @@ public class AuthorControllerIntegrationTest {
     }
 
     @Test
-    void whenUpdateAuthor_thenReturnResponseOk() throws Exception {
-        author.setName("Updated Name");
+    void whenUpdateAuthor_givenExistentAuthor_thenReturnResponseOk() throws Exception {
+        author.setBio("Updated Bio");
 
         mockMvc.perform(post("/authors/update")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -73,6 +73,22 @@ public class AuthorControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("Author updated successfully"));
     }
+
+    @Test
+    void whenUpdateAuthor_givenNonExistentAuthor_thenReturnResponseNotFound() throws Exception {
+        Author nonExistingAuthor = Author.builder()
+                .id(60L)
+                .name("Non Existing Author")
+                .bio("bio1")
+                .build();
+
+        mockMvc.perform(post("/authors/update")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(nonExistingAuthor)))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Author not found"));
+    }
+
 
     @Test
     void whenDeleteAuthor_givenExistentId_thenReturnResponseOk() throws Exception {

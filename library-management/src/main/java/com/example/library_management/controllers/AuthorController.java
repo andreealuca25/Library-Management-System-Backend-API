@@ -35,8 +35,12 @@ public class AuthorController {
 
     @PostMapping("/update")
     public ResponseEntity<String> updateAuthor(@RequestBody Author author) {
-        authorService.updateAuthor(author);
-        return new ResponseEntity<>("Author updated successfully", HttpStatus.OK);
+        try {
+            authorService.updateAuthor(author);
+            return new ResponseEntity<>("Author updated successfully", HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("Author not found", HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/getInfo/{id}")

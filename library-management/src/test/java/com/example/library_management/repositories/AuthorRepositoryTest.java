@@ -45,6 +45,17 @@ public class AuthorRepositoryTest {
     }
 
     @Test
+    void whenFindByName_thenReturnAuthor() {
+        when(authorRepository.findByName(author.getName())).thenReturn(Optional.of(author));
+        Optional<Author> foundAuthor = authorRepository.findByName(author.getName());
+        assertThat(foundAuthor).isPresent();
+        assertThat(foundAuthor.get().getBio()).isEqualTo(author.getBio());
+        assertThat(foundAuthor.get().getId()).isEqualTo(author.getId());
+        assertThat(foundAuthor.get().getName()).isEqualTo(author.getName());
+        verify(authorRepository, times(1)).findByName(author.getName());
+    }
+
+    @Test
     void whenFindAll_thenReturnAuthors() {
         when(authorRepository.findAll()).thenReturn(authors);
 

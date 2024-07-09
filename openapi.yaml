@@ -58,6 +58,8 @@ paths:
       responses:
         '200':
           description: Author updated successfully.
+        '404':
+          description: Author not found.
   /authors/getInfo/{id}:
     get:
       tags:
@@ -139,6 +141,8 @@ paths:
       responses:
         '200':
           description: Book updated successfully.
+        '404':
+          description: Book not found.
   /books/getInfo/{id}:
     get:
       tags:

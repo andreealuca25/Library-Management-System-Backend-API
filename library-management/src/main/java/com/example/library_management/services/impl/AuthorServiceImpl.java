@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -25,7 +26,15 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void updateAuthor(Author author) {
-        authorRepository.save(author);
+        Optional<Author> optionalAuthor = authorRepository.findByName(author.getName());
+        if (optionalAuthor.isPresent()) {
+            Author authorToUpdate = optionalAuthor.get();
+            authorToUpdate.setBio(author.getBio());
+            authorRepository.save(authorToUpdate);
+        }
+        else {
+            throw new NoSuchElementException("Author not found");
+        }
     }
 
     @Override
