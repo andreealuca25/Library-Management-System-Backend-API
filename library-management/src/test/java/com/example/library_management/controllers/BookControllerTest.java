@@ -75,7 +75,7 @@ public class BookControllerTest {
     }
 
     @Test
-    void whenUpdateBook_thenReturnResponseOk() throws Exception {
+    void whenUpdateBook_givenExistingBook_thenReturnResponseOk() throws Exception {
         doNothing().when(bookService).updateBook(any(Book.class));
 
         mockMvc.perform(post("/books/update")
@@ -83,6 +83,17 @@ public class BookControllerTest {
                         .content(objectMapper.writeValueAsString(book)))
                 .andExpect(status().isOk());
 
+        verify(bookService, times(1)).updateBook(any(Book.class));
+    }
+
+    @Test
+    void whenUpdateBook_givenNonExistingBook_thenReturnNotFound() throws Exception {
+        doThrow(NoSuchElementException.class).when(bookService).updateBook(any(Book.class));
+        mockMvc.perform(post("/books/update")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book)))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Book not found"));
         verify(bookService, times(1)).updateBook(any(Book.class));
     }
 

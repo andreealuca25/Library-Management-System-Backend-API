@@ -80,8 +80,8 @@ public class BookControllerIntegrationTest {
     }
 
     @Test
-    void whenUpdateBook_thenReturnResponseOk() throws Exception {
-        book.setTitle("Updated Title");
+    void whenUpdateBook_givenExistentId_thenReturnResponseOk() throws Exception {
+        book.setDescription("new description");
 
         mockMvc.perform(post("/books/update")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -89,6 +89,23 @@ public class BookControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("Book updated successfully"));
     }
+
+    @Test
+    void whenUpdateBook_givenNonExistentId_thenReturnResponseNotFound() throws Exception {
+        Book nonExistingBook = Book.builder()
+                .id(2L)
+                .title("Not Found Title")
+                .description("description2")
+                .isbn("9780747532733")
+                .author(AuthorMocks.mockAuthor2())
+                .build();
+        mockMvc.perform(post("/books/update")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(nonExistingBook)))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Book not found"));
+    }
+
 
     @Test
     void whenDeleteBook_givenExistentId_thenReturnResponseOk() throws Exception {

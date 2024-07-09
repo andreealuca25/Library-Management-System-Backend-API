@@ -62,7 +62,7 @@ public class BookServiceImplTest {
     }
 
     @Test
-    void whenGetBookById_givenNonExistingId_thenReturnNull() {
+    void whenGetBookById_givenNonExistingId_shouldThrowException() {
         when(bookRepository.findById(1L)).thenReturn(Optional.empty());
 
         NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
@@ -81,11 +81,25 @@ public class BookServiceImplTest {
     }
 
     @Test
-    void whenUpdateBook_shouldUpdateBook() {
-        when(bookRepository.save(book)).thenReturn(book);
+    void whenUpdateBook_GivenExistingBook_shouldUpdateBook() {
+        when(bookRepository.findByTitle(book.getTitle())).thenReturn(Optional.of(book));
 
         bookService.updateBook(book);
+        verify(bookRepository, times(1)).findByTitle(book.getTitle());
         verify(bookRepository, times(1)).save(book);
+
+    }
+
+    @Test
+    void whenUpdateBook_GivenNonExistingBook_shouldUpdateBook() {
+        when(bookRepository.findByTitle(book.getTitle())).thenReturn(Optional.empty());
+
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
+                    bookService.updateBook(book);
+                });
+        assertEquals("Book not found", exception.getMessage());
+        verify(bookRepository, times(1)).findByTitle(book.getTitle());
+        verify(bookRepository, times(0)).save(book);
     }
 
     @Test
@@ -99,7 +113,7 @@ public class BookServiceImplTest {
     }
 
     @Test
-    void whenDeleteBook_GivenNonExistingId_shouldDeleteBook() {
+    void whenDeleteBook_GivenNonExistingId_shouldThrowException() {
 
         when(bookRepository.findById(1L)).thenReturn(Optional.empty());
 

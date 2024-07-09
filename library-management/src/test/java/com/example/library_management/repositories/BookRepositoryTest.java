@@ -48,6 +48,19 @@ public class BookRepositoryTest {
     }
 
     @Test
+    void whenFindByTitle_thenReturnBook() {
+        when(bookRepository.findByTitle(book.getTitle())).thenReturn(Optional.of(book));
+        Optional<Book> foundBook = bookRepository.findByTitle(book.getTitle());
+        assertThat(foundBook).isPresent();
+        assertThat(foundBook.get().getId()).isEqualTo(book.getId());
+        assertThat(foundBook.get().getTitle()).isEqualTo(book.getTitle());
+        assertThat(foundBook.get().getAuthor()).isEqualTo(book.getAuthor());
+        assertThat(foundBook.get().getIsbn()).isEqualTo(book.getIsbn());
+        assertThat(foundBook.get().getDescription()).isEqualTo(book.getDescription());
+        verify(bookRepository, times(1)).findByTitle(book.getTitle());
+    }
+
+    @Test
     void whenFindAll_thenReturnBooks() {
         when(bookRepository.findAll()).thenReturn(books);
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 
 @Service
@@ -33,7 +34,18 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void updateBook(Book book) {
-        bookRepository.save(book);
+
+        Optional<Book> optionalBook = bookRepository.findByTitle(book.getTitle());
+        if (optionalBook.isPresent()) {
+            Book bookToUpdate = optionalBook.get();
+            bookToUpdate.setAuthor(book.getAuthor());
+            bookToUpdate.setIsbn(book.getIsbn());
+            bookToUpdate.setDescription(book.getDescription());
+            bookRepository.save(bookToUpdate);
+        }
+        else {
+            throw new NoSuchElementException("Book not found");
+        }
     }
 
     @Override
