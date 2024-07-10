@@ -67,7 +67,7 @@ public class AuthorControllerIntegrationTest {
     void whenUpdateAuthor_givenExistentAuthor_thenReturnResponseOk() throws Exception {
         author.setBio("Updated Bio");
 
-        mockMvc.perform(post("/authors/update")
+        mockMvc.perform(put("/authors/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(author)))
                 .andExpect(status().isOk())
@@ -82,7 +82,7 @@ public class AuthorControllerIntegrationTest {
                 .bio("bio1")
                 .build();
 
-        mockMvc.perform(post("/authors/update")
+        mockMvc.perform(put("/authors/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(nonExistingAuthor)))
                 .andExpect(status().isNotFound())

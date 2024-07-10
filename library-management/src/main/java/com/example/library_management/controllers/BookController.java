@@ -32,7 +32,7 @@ public class BookController {
         bookService.addBook(book);
         return new ResponseEntity<>("Book added successfully", HttpStatus.CREATED);
     }
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<String> updateBook(@RequestBody Book book) {
 
         try {

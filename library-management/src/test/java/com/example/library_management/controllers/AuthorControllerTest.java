@@ -75,7 +75,7 @@ public class AuthorControllerTest {
     void whenUpdateAuthor_givenExistingAuthor_thenReturnResponseOk() throws Exception {
         doNothing().when(authorService).updateAuthor(any(Author.class));
 
-        mockMvc.perform(post("/authors/update")
+        mockMvc.perform(put("/authors/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(author)))
                 .andExpect(status().isOk());
@@ -87,7 +87,7 @@ public class AuthorControllerTest {
     void whenUpdateAuthor_givenNonExistingAuthor_thenReturnNotFound() throws Exception {
         doThrow(NoSuchElementException.class).when(authorService).updateAuthor(any(Author.class));
 
-        mockMvc.perform(post("/authors/update")
+        mockMvc.perform(put("/authors/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(author)))
                 .andExpect(status().isNotFound())

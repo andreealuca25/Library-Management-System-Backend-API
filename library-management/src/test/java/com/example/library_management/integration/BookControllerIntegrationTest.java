@@ -83,7 +83,7 @@ public class BookControllerIntegrationTest {
     void whenUpdateBook_givenExistentId_thenReturnResponseOk() throws Exception {
         book.setDescription("new description");
 
-        mockMvc.perform(post("/books/update")
+        mockMvc.perform(put("/books/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(book)))
                 .andExpect(status().isOk())
@@ -99,7 +99,7 @@ public class BookControllerIntegrationTest {
                 .isbn("9780747532733")
                 .author(AuthorMocks.mockAuthor2())
                 .build();
-        mockMvc.perform(post("/books/update")
+        mockMvc.perform(put("/books/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(nonExistingBook)))
                 .andExpect(status().isNotFound())

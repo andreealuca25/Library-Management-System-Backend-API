@@ -33,7 +33,7 @@ public class AuthorController {
         return new ResponseEntity<>("Author added successfully", HttpStatus.CREATED);
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<String> updateAuthor(@RequestBody Author author) {
         try {
             authorService.updateAuthor(author);
